@@ -1,0 +1,14 @@
+# Binaries
+bin/
+
+# Output and logs
+*.log
+*.out
+
+# Transient work directories
+work/
+
+# Editor artifacts
+*.swp
+*~
+.DS_Store
