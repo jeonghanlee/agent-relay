@@ -7,7 +7,7 @@ Canonical branch or ref: master
 Git upstream: origin/master
 Remote tracker: jeonghanlee/agent-relay
 
-Next session entry point: M2 Implementation Plan in `docs/milestone-2498430.md`
+Next session entry point: M3 Implementation Plan in `docs/milestone-2498430.md`
 
 ## Milestone
 
@@ -16,8 +16,8 @@ Next session entry point: M2 Implementation Plan in `docs/milestone-2498430.md`
 | Group | ID | Work unit | Type | Status | Ready | Deps | Done when / Evidence |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Core | M1 | Repository Scaffold, LDFLAGS Build & Docs Trio | Milestone | Complete | No | | `make build` emits version/Git SHA and docs trio complete; [detail](#m1---repository-scaffold-ldflags-build--docs-trio) |
-| Core | M2 | Layer 0: Wire Protocol, Framing & Anti-DoS | Milestone | Ready | Yes | M1 | 4B length-prefix framing & 16MB DoS rejection unit tests pass; [detail](#m2---layer-0-wire-protocol-framing--anti-dos) |
-| Core | M3 | Layer 1: Kernel Security, SO_PEERCRED & UDS Socket | Milestone | Not started | No | M2 | SO_PEERCRED UID check & Flock socket recovery tests pass; [detail](#m3---layer-1-kernel-security-so_peercred--uds-socket) |
+| Core | M2 | Layer 0: Wire Protocol, Framing & Anti-DoS | Milestone | Complete | No | M1 | 4B length-prefix framing & 16MB DoS rejection unit tests pass; [detail](#m2---layer-0-wire-protocol-framing--anti-dos) |
+| Core | M3 | Layer 1: Kernel Security, SO_PEERCRED & UDS Socket | Milestone | Ready | Yes | M2 | SO_PEERCRED UID check & Flock socket recovery tests pass; [detail](#m3---layer-1-kernel-security-so_peercred--uds-socket) |
 | Core | M4 | Layer 2: Runtime Supervisor, RLIMIT & Engine | Milestone | Not started | No | M3 | Child subreaper orphan tests & offline mock driver pass; [detail](#m4---layer-2-runtime-supervisor-rlimit--engine) |
 | Core | M5 | Layer 3: CLI Suite, Ergonomics & Operator Bundle | Milestone | Not started | No | M4 | `ctl abort` < 500ms, man page, shell completion verified; [detail](#m5---layer-3-cli-suite-ergonomics--operator-bundle) |
 | Core | M6 | Documentation Book (mdBook) & v1.0.0 Release | Milestone | Not started | No | M5 | `mdbook build` & `tests/verify-book-commands.bash` pass; [detail](#m6---documentation-book-mdbook--v100-release) |
@@ -97,7 +97,7 @@ Superseded Plan Artifacts: none
 
 ##### Closure Evidence
 
-- `make build`, `./bin/agent-relay --version`, and `STATUS.md` verification passed on 2026-09-27.
+- `make build`, `./bin/agent-relay --version`, and `STATUS.md` verification passed on 2026-09-27. Committed as `c8935e3`.
 
 ---
 
@@ -106,7 +106,7 @@ Superseded Plan Artifacts: none
 Origin: 2498430 / M2
 Identity History: none
 GitHub Issue: none
-Status: Ready
+Status: Complete
 
 ##### Summary
 
@@ -125,7 +125,7 @@ Out of scope: UDS socket listener, kernel credentials, process spawning.
 - Unit tests verify 4-byte prefix encoding and decoding for frames under 16MB.
 - Frames exceeding 16MB are rejected immediately before heap allocation.
 - Lossless forward compatibility preserves unknown fields via `Extensions map[string]json.RawMessage`.
-- `go test -race ./internal/protocol/... ./internal/framing/...` passes 100%.
+- `go test -race ./internal/protocol/... ./internal/framing/... ./test/conformance/...` passes 100%.
 
 ##### Dependencies And Decisions
 
@@ -143,13 +143,13 @@ Out of scope: UDS socket listener, kernel credentials, process spawning.
 
 | Label | Observed At | Environment | Result | Evidence |
 | --- | --- | --- | --- | --- |
-| T1 | Not run | Linux x86_64 | Pending | `go test` |
-| T2 | Not run | Linux x86_64 | Pending | `go test` |
-| T3 | Not run | Linux x86_64 | Pending | `go test` |
+| T1 | 2026-09-27 16:30 PDT | Linux x86_64 | Passed | `TestFramingRoundtrip_Success`, `TestReadFrame_RejectsExceedingMax_DoSProtection`, deadline tests pass |
+| T2 | 2026-09-27 16:30 PDT | Linux x86_64 | Passed | `TestEnvelopeValidation_Success`, missing fields, bounds, and lossless extensions pass |
+| T3 | 2026-09-27 16:30 PDT | Linux x86_64 | Passed | `TestWireConformance_AllFrameTypes`, extension roundtrip pass |
 
 ##### Closure Evidence
 
-- Pending M2 completion.
+- `go test -race -v ./internal/... ./test/...` executed with 100% pass on 2026-09-27. `make fmt` and `make lint` clean.
 
 ---
 
@@ -158,7 +158,7 @@ Out of scope: UDS socket listener, kernel credentials, process spawning.
 Origin: 2498430 / M3
 Identity History: none
 GitHub Issue: none
-Status: Not started
+Status: Ready
 
 ##### Summary
 
