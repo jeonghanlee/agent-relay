@@ -12,7 +12,7 @@ This document tracks implementation progress across the six core milestones for 
 | --- | --- | --- | --- | --- |
 | M1 | Repository Scaffold, LDFLAGS Build & Docs Trio | Infra | ✓ | `Makefile`, `go.mod`, docs trio, `bin/agent-relay` |
 | M2 | Layer 0: Wire Protocol, Framing & Anti-DoS | Layer 0 | ✓ | `internal/protocol/`, `internal/framing/`, `test/conformance/` |
-| M3 | Layer 1: Kernel Security, SO_PEERCRED & Socket | Layer 1 | — | `internal/security/`, `internal/socket/` |
+| M3 | Layer 1: Kernel Security, SO_PEERCRED & Socket | Layer 1 | ✓ | `internal/security/`, `internal/socket/` |
 | M4 | Layer 2: Runtime Supervisor, RLIMIT & Engine | Layer 2 | — | `internal/supervisor/`, `internal/relay/`, `pkg/mock/` |
 | M5 | Layer 3: CLI Suite, Ergonomics & Operator Bundle | Layer 3 | — | `cmd/agent-relay/`, `docs/man/`, `systemd/` |
 | M6 | Documentation Book (mdBook) & v1.0.0 Release | Release | — | `book/`, `tests/verify-book-commands.bash` |
@@ -25,9 +25,9 @@ This document tracks implementation progress across the six core milestones for 
 
 ## Open Items
 
-### M3 Layer 1 Kernel Security and UDS Socket Infrastructure
+### M4 Layer 2 Runtime Supervisor, RLIMIT & Relay Engine
 
-Ready to implement SO_PEERCRED credential checks, path traversal evaluation, and socket management with single-instance locking.
+Implementing runtime process supervision, process group isolation (`Setpgid`), execution timeout enforcement, `prlimit` resource ceilings (CPU, memory, file descriptors), concurrent subagent routing engine, and reference agent mock harness.
 
 ## Update Protocol
 

@@ -7,7 +7,7 @@ Canonical branch or ref: master
 Git upstream: origin/master
 Remote tracker: jeonghanlee/agent-relay
 
-Next session entry point: M3 Implementation Plan in `docs/milestone-2498430.md`
+Next session entry point: M4 Implementation Plan in `docs/milestone-2498430.md`
 
 ## Milestone
 
@@ -17,8 +17,8 @@ Next session entry point: M3 Implementation Plan in `docs/milestone-2498430.md`
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | Core | M1 | Repository Scaffold, LDFLAGS Build & Docs Trio | Milestone | Complete | No | | `make build` emits version/Git SHA and docs trio complete; [detail](#m1---repository-scaffold-ldflags-build--docs-trio) |
 | Core | M2 | Layer 0: Wire Protocol, Framing & Anti-DoS | Milestone | Complete | No | M1 | 4B length-prefix framing & 16MB DoS rejection unit tests pass; [detail](#m2---layer-0-wire-protocol-framing--anti-dos) |
-| Core | M3 | Layer 1: Kernel Security, SO_PEERCRED & UDS Socket | Milestone | Ready | Yes | M2 | SO_PEERCRED UID check & Flock socket recovery tests pass; [detail](#m3---layer-1-kernel-security-so_peercred--uds-socket) |
-| Core | M4 | Layer 2: Runtime Supervisor, RLIMIT & Engine | Milestone | Not started | No | M3 | Child subreaper orphan tests & offline mock driver pass; [detail](#m4---layer-2-runtime-supervisor-rlimit--engine) |
+| Core | M3 | Layer 1: Kernel Security, SO_PEERCRED & UDS Socket | Milestone | Complete | No | M2 | SO_PEERCRED UID check & Flock socket recovery tests pass; [detail](#m3---layer-1-kernel-security-so_peercred--uds-socket) |
+| Core | M4 | Layer 2: Runtime Supervisor, RLIMIT & Engine | Milestone | Ready | Yes | M3 | Child subreaper orphan tests & offline mock driver pass; [detail](#m4---layer-2-runtime-supervisor-rlimit--engine) |
 | Core | M5 | Layer 3: CLI Suite, Ergonomics & Operator Bundle | Milestone | Not started | No | M4 | `ctl abort` < 500ms, man page, shell completion verified; [detail](#m5---layer-3-cli-suite-ergonomics--operator-bundle) |
 | Core | M6 | Documentation Book (mdBook) & v1.0.0 Release | Milestone | Not started | No | M5 | `mdbook build` & `tests/verify-book-commands.bash` pass; [detail](#m6---documentation-book-mdbook--v100-release) |
 
@@ -158,7 +158,7 @@ Out of scope: UDS socket listener, kernel credentials, process spawning.
 Origin: 2498430 / M3
 Identity History: none
 GitHub Issue: none
-Status: Ready
+Status: Complete
 
 ##### Summary
 
@@ -194,12 +194,12 @@ Out of scope: process execution and log streaming.
 
 | Label | Observed At | Environment | Result | Evidence |
 | --- | --- | --- | --- | --- |
-| T1 | Not run | Linux x86_64 | Pending | `go test` |
-| T2 | Not run | Linux x86_64 | Pending | `go test` |
+| T1 | 2026-09-27 | Linux x86_64 | Passed | `go test -race ./internal/security/...` (5 PASS) |
+| T2 | 2026-09-27 | Linux x86_64 | Passed | `go test -race ./internal/socket/...` (4 PASS) |
 
 ##### Closure Evidence
 
-- Pending M3 completion.
+- `go test -race -v ./internal/security/... ./internal/socket/...` executed with 100% pass on 2026-09-27. `make fmt` and `make lint` clean.
 
 ---
 
